@@ -8,7 +8,7 @@ configDotenv();
 const app = express();
 const PORT =  3000;
 const MONGODB_URI = process.env.DATABASE_URL;
-const client = new MongoClient(MONGODB_URI);
+const client = new MongoClient(MONGODB_URI,{});
 
 app.use(express.json());
 app.use(cors());

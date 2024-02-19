@@ -6,7 +6,7 @@ import  cors from 'cors';
 configDotenv();
 
 const app = express();
-// const PORT =  3000;
+const PORT =  3000;
 const MONGODB_URI = process.env.DATABASE_URL;
 
 app.use(express.json());
@@ -33,7 +33,7 @@ run().catch(console.error);
 // Endpoint to add a new record
 app.post('/addRecord', async (req, res) => {
   try {
-      const db = client.db(); 
+      const db = client.db('test'); 
       const collection = db.collection('records'); 
 
       const { dateTime, drawCount, playerOne, playerOneLoseCount, playerOneWinCount, playerTwo, playerTwoLoseCount, playerTwoWinCount, roundCount } = req.body;
@@ -61,7 +61,7 @@ app.post('/addRecord', async (req, res) => {
 // Endpoint to get all records
 app.get('/getRecords', async (req, res) => {
   try {
-      const db = client.db(); 
+      const db = client.db('test'); 
       const collection = db.collection('records'); 
 
       const records = await collection.find({}).toArray();
@@ -74,8 +74,8 @@ app.get('/getRecords', async (req, res) => {
   }
 });
 
-// app.listen(PORT, () => {
-//   console.log(`server is running on port ${PORT}`);
-// })
+app.listen(PORT, () => {
+  console.log(`server is running on port ${PORT}`);
+})
 
 

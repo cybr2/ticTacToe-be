@@ -6,7 +6,7 @@ import  cors from 'cors';
 configDotenv();
 
 const app = express();
-const PORT =  3000;
+// const PORT =  3000;
 const MONGODB_URI = process.env.DATABASE_URL;
 
 app.use(express.json());
@@ -74,8 +74,8 @@ app.get('/getRecords', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`server is running on port ${PORT}`);
-})
+// app.listen(PORT, () => {
+//   console.log(`server is running on port ${PORT}`);
+// })
 
 

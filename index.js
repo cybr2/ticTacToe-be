@@ -9,12 +9,10 @@ const app = express();
 const PORT =  3000;
 const MONGODB_URI = process.env.DATABASE_URL;
 
-let client;
-
-
 app.use(express.json());
 app.use(cors());
 
+let client;
 
 async function run() {
   try {

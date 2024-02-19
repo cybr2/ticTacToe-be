@@ -8,18 +8,17 @@ configDotenv();
 const app = express();
 const PORT =  3000;
 const MONGODB_URI = process.env.DATABASE_URL;
+const client = new MongoClient(MONGODB_URI);
 
 app.use(express.json());
 app.use(cors());
 
-let client;
 
 async function run() {
   try {
-    client = new MongoClient(MONGODB_URI);
     await client.connect();
     console.log("Connected to MongoDB!");
-    await client.db("admin").command({ ping: 1 });
+    await client.db("test").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);

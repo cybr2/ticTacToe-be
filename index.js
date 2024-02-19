@@ -24,16 +24,16 @@ async function run() {
   try {
     console.log(`connecting`);
     await client.connect();
-    console.log(`locating client`);
-    const database = client.db('test');
-    const records = database.collection('records')
-    const doc = {
-      title: "Record of a Shriveled Datum",
-      content: "No bytes, no problem. Just insert a document, in MongoDB",
-    }
-    console.log('saving data')
-    const result = await records.insertOne(doc);
-    console.log(`A document was inserted with the _id: ${result.insertedId}`);
+    console.log(`connected`);
+    // const database = client.db('test');
+    // const records = database.collection('records')
+    // const doc = {
+    //   title: "Record of a Shriveled Datum",
+    //   content: "No bytes, no problem. Just insert a document, in MongoDB",
+    // }
+    // console.log(`${records} accessed`)
+    // const result = await records.insertOne(doc);
+    // console.log(`A document was inserted with the _id: ${result.insertedId}`);
   } finally {
     console.log('closing client')
     await client.close();

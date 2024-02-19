@@ -18,14 +18,17 @@ async function run() {
   try {
     client = new MongoClient(MONGODB_URI);
     await client.connect();
+    console.log("Connected to MongoDB!");
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);
   }
 }
-
 run().catch(console.error);
+
+
+
 
 // Endpoint to add a new record
 app.post('/addRecord', async (req, res) => {

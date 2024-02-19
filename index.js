@@ -7,7 +7,7 @@ configDotenv();
 
 const app = express();
 const PORT =  3000;
-const MONGODB_URI = process.env.DATABASE_URL;
+const MONGODB_URI = "mongodb+srv://chris-y:walangWork@cluster0.zansxh0.mongodb.net/test?retryWrites=true&w=majority";
 const client = new MongoClient(MONGODB_URI,{
   serverApi:{
     version: ServerApiVersion.v1,

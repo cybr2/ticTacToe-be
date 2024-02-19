@@ -9,6 +9,8 @@ const app = express();
 const PORT =  3000;
 const MONGODB_URI = process.env.DATABASE_URL;
 
+let client;
+
 
 app.use(express.json());
 app.use(cors());
@@ -16,7 +18,7 @@ app.use(cors());
 
 async function run() {
   try {
-    const client = new MongoClient(MONGODB_URI,{});
+    client = new MongoClient(MONGODB_URI);
     await client.connect();
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
@@ -30,7 +32,6 @@ run().catch(console.error);
 // Endpoint to add a new record
 app.post('/addRecord', async (req, res) => {
   try {
-    const client = new MongoClient(MONGODB_URI,{});
       const db = client.db(); 
       const collection = db.collection('records'); 
 
@@ -59,7 +60,6 @@ app.post('/addRecord', async (req, res) => {
 // Endpoint to get all records
 app.get('/getRecords', async (req, res) => {
   try {
-    const client = new MongoClient(MONGODB_URI,{});
       const db = client.db(); 
       const collection = db.collection('records'); 
 

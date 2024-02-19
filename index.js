@@ -1,5 +1,5 @@
 import express from 'express';
-import { MongoClient } from 'mongodb';
+import { MongoClient, ServerApiVersion } from 'mongodb';
 import { config as configDotenv } from 'dotenv';
 import  cors from 'cors';
 
@@ -8,7 +8,13 @@ configDotenv();
 const app = express();
 const PORT =  3000;
 const MONGODB_URI = process.env.DATABASE_URL;
-const client = new MongoClient(MONGODB_URI);
+const client = new MongoClient(MONGODB_URI,{
+  serverApi:{
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
 
 app.use(express.json());
 app.use(cors());
@@ -74,10 +80,14 @@ app.post('/addRecord', async (req, res) => {
 // Endpoint to get all records
 app.get('/getRecords', async (req, res) => {
   try {
+      console.log('connecting')
       await client.connect()
+      console.log(`locating client`);
+
       const database = client.db('test'); 
       const collection = database.collection('records'); 
 
+      console.log(`getting data`);
       const records = await collection.find({}).toArray();
 
       console.log('get data success');
@@ -88,6 +98,7 @@ app.get('/getRecords', async (req, res) => {
   }finally {
     // Close the client connection
     if (client) {
+      console.log('closing client')
       await client.close();
     }
   }

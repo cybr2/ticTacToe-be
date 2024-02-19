@@ -16,15 +16,25 @@ app.use(cors());
 
 async function run() {
   try {
+    console.log(`connecting`);
     await client.connect();
-    console.log("Connected to MongoDB!");
-    await client.db("test").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } catch (error) {
-    console.error("Error connecting to MongoDB:", error);
+    console.log(`locating client`);
+    const database = client.db('test');
+    const records = database.collection('records')
+    const doc = {
+      title: "Record of a Shriveled Datum",
+      content: "No bytes, no problem. Just insert a document, in MongoDB",
+    }
+    console.log('saving data')
+    const result = await records.insertOne(doc);
+    console.log(`A document was inserted with the _id: ${result.insertedId}`);
+  } finally {
+    console.log('closing client')
+    await client.close();
   }
+  
 }
-run().catch(console.error);
+run().catch(console.dir);
 
 
 
@@ -32,8 +42,9 @@ run().catch(console.error);
 // Endpoint to add a new record
 app.post('/addRecord', async (req, res) => {
   try {
-      const db = client.db('test'); 
-      const collection = db.collection('records'); 
+      await client.connect()
+      const database = client.db('test'); 
+      const collection = database.collection('records'); 
 
       const { dateTime, drawCount, playerOne, playerOneLoseCount, playerOneWinCount, playerTwo, playerTwoLoseCount, playerTwoWinCount, roundCount } = req.body;
       
@@ -54,14 +65,18 @@ app.post('/addRecord', async (req, res) => {
   } catch (error) {
       console.error('Error adding record:', error);
       res.status(500).json({ error: 'Internal Server Error' });
+  }finally {
+    console.log('closing client')
+    await client.close();
   }
 });
 
 // Endpoint to get all records
 app.get('/getRecords', async (req, res) => {
   try {
-      const db = client.db('test'); 
-      const collection = db.collection('records'); 
+      await client.connect()
+      const database = client.db('test'); 
+      const collection = database.collection('records'); 
 
       const records = await collection.find({}).toArray();
 
@@ -70,6 +85,11 @@ app.get('/getRecords', async (req, res) => {
   } catch (error) {
       console.error('Error fetching records:', error);
       res.status(500).json({ error: 'Internal Server Error' });
+  }finally {
+    // Close the client connection
+    if (client) {
+      await client.close();
+    }
   }
 });
 
